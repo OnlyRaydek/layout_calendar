@@ -1,3 +1,70 @@
+$day-color: #eee;
+$day-size: 100px;
+$grid-spacing: 1px;
+$week-day: (
+  "mon": 0,
+  "tue": 1,
+  "wed": 2,
+  "thu": 3,
+  "fri": 4,
+  "sat": 5,
+  "sun": 6
+);
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  width: ($day-size + $grid-spacing) * 7;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.calendar > div {
+  height: $day-size;
+  flex: 0 0 $day-size;
+  background-color: $day-color;
+  margin-top: $grid-spacing;
+  margin-left: $grid-spacing;
+  text-align: center;
+  line-height: $day-size;
+  cursor: pointer;
+  transition: 0.5s;
+  border: 1px black solid;
+  
+  &:hover {
+    background-color: #ffbfca;
+    transform: translateY(-20px);
+  }
+  
+}
+
+@for $i from 1 through 31 {
+  .calendar > div:nth-child(#{$i}) {
+    &::after {
+      content: "#{$i}";
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      color: #000;
+    }
+  }
+}
+
+@for $i from 28 through 31 {
+  .calendar-#{$i} > div:nth-child(n+#{$i+1}) {
+    display: none;
+  }
+}
+
+@each $dayName, $day in $week-day {
+  .calendar-#{$dayName} :first-child {
+    margin-left: (($day-size + $grid-spacing) * $day + $grid-spacing);
+  }
 }
